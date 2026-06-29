@@ -63,6 +63,9 @@
 				},
 				{
 					"name": "derivedColumn5"
+				},
+				{
+					"name": "derivedColumn6"
 				}
 			],
 			"scriptLines": [
@@ -209,7 +212,28 @@
 				"    toDate(fecha_pago, 'dd-MMM-yyyy'),\r",
 				"    toDate(fecha_pago, 'MMMM dd, yyyy'),\r",
 				"    toDate(fecha_pago, \"dd 'de' MMMM 'de' yyyy\")\r",
-				")) ~> derivedColumn5"
+				"),",
+				"          concepto_pago = initCap(lower(concepto_pago)),",
+				"          estado_pago = initCap(lower(estado_pago)),",
+				"          canal_pago = initCap(lower(canal_pago))) ~> derivedColumn5",
+				"source6 derive(ci_madre =  (regexReplace(toString(ci_madre), '[^0-9.]', '')),",
+				"          ci_recien_nacido = (regexReplace(toString(ci_recien_nacido), '[^0-9.]', '')),",
+				"          peso_nacimiento_kg = toDecimal(peso_nacimiento_kg),",
+				"          talla_nacimiento_cm = toDecimal(talla_nacimiento_cm),",
+				"          fecha_parto = coalesce( \r",
+				"    toDate(fecha_parto, 'yyyy-MM-dd'), \r",
+				"    toDate(fecha_parto, 'dd/MM/yyyy'), \r",
+				"    toDate(fecha_parto, 'MM-dd-yyyy'), \r",
+				"    toDate(fecha_parto, 'yyyy/MM/dd'), \r",
+				"    toDate(fecha_parto, 'dd-MMM-yyyy'),\r",
+				"    toDate(fecha_parto, 'MMMM dd, yyyy'),\r",
+				"    toDate(fecha_parto, \"dd 'de' MMMM 'de' yyyy\")\r",
+				"),",
+				"          tipo_parto = case(\r",
+				"  in(['Nattural','nORMAL','normal','Nrmal','Noraml','NORMAL'], tipo_parto), 'Natural',\r",
+				"  in(['Cessárea','cesárea'], tipo_parto), 'Cesárea',\r",
+				"  tipo_parto\r",
+				")) ~> derivedColumn6"
 			]
 		}
 	}
