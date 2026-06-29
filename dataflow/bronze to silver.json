@@ -51,6 +51,9 @@
 			"transformations": [
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "derivedColumn2"
 				}
 			],
 			"scriptLines": [
@@ -148,13 +151,23 @@
 				"          talla_nino_cm = toDecimal(talla_nino_cm),",
 				"          peso_nino_kg = toDecimal(peso_nino_kg),",
 				"          resultado = case(\r",
-				"  in(['computadoras','laptops','pcs'], resultado), 'Normal',\r",
+				"  in(['nrmal','nORMAL','normal','Nrmal'], resultado), 'Normal',\r",
 				"  in(['bAJO pESO','pantallas'], resultado), 'Bajo Peso',\r",
-				"  in(['perifericos','periféricos'], resultado), 'Desnutricion Leve',\r",
+				"  in(['DESNUTRICIÓN LEVE','Desnutriicón Leve','Desnutricion Leve','DESNUTRICIÓN LVEE'], resultado), 'Desnutrición Leve',\r",
 				"  resultado\r",
 				")\r",
 				",",
-				"          vacuna_aplicada = initCap(lower(vacuna_aplicada))) ~> derivedColumn1"
+				"          vacuna_aplicada = initCap(lower(vacuna_aplicada))) ~> derivedColumn1",
+				"source2 derive(ci_beneficiaria = (regexReplace(toString(ci_beneficiaria), '[^0-9.]', '')),",
+				"          fecha_control = coalesce( \r",
+				"    toDate(fecha_control, 'yyyy-MM-dd'), \r",
+				"    toDate(fecha_control, 'dd/MM/yyyy'), \r",
+				"    toDate(fecha_control, 'MM-dd-yyyy'), \r",
+				"    toDate(fecha_control, 'yyyy/MM/dd'), \r",
+				"    toDate(fecha_control, 'dd-MMM-yyyy'),\r",
+				"    toDate(fecha_control, 'MMMM dd, yyyy'),\r",
+				"    toDate(fecha_control, \"dd 'de' MMMM 'de' yyyy\")\r",
+				")) ~> derivedColumn2"
 			]
 		}
 	}
