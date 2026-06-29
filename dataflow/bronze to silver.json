@@ -1,0 +1,161 @@
+{
+	"name": "bronze to silver",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "bja_controles_pediatricos",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "bja_controles_prenatales",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				},
+				{
+					"dataset": {
+						"referenceName": "bja_establecimientos_salud",
+						"type": "DatasetReference"
+					},
+					"name": "source3"
+				},
+				{
+					"dataset": {
+						"referenceName": "bja_inscripciones",
+						"type": "DatasetReference"
+					},
+					"name": "source4"
+				},
+				{
+					"dataset": {
+						"referenceName": "bja_pagos",
+						"type": "DatasetReference"
+					},
+					"name": "source5"
+				},
+				{
+					"dataset": {
+						"referenceName": "bja_partos",
+						"type": "DatasetReference"
+					},
+					"name": "source6"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          control_pediatrico_id as string,",
+				"          ci_nino as string,",
+				"          ci_madre as string,",
+				"          establecimiento_id as string,",
+				"          nro_control as string,",
+				"          fecha_control as string,",
+				"          peso_nino_kg as string,",
+				"          talla_nino_cm as string,",
+				"          vacuna_aplicada as string,",
+				"          resultado as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source(output(",
+				"          control_prenatal_id as string,",
+				"          ci_beneficiaria as string,",
+				"          establecimiento_id as string,",
+				"          nro_control as string,",
+				"          fecha_control as string,",
+				"          semana_gestacion as string,",
+				"          peso_madre_kg as string,",
+				"          presion_arterial as string,",
+				"          resultado as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source2",
+				"source(output(",
+				"          establecimiento_id as string,",
+				"          codigo_snis as string,",
+				"          nombre as string,",
+				"          tipo as string,",
+				"          nivel_atencion as string,",
+				"          municipio as string,",
+				"          departamento as string,",
+				"          red_salud as string,",
+				"          estado as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source3",
+				"source(output(",
+				"          inscripcion_id as string,",
+				"          ci_beneficiaria as string,",
+				"          establecimiento_id as string,",
+				"          fecha_inscripcion as string,",
+				"          semana_gestacion as string,",
+				"          estado as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source4",
+				"source(output(",
+				"          pago_id as string,",
+				"          ci_beneficiaria as string,",
+				"          concepto_pago as string,",
+				"          monto_bs as string,",
+				"          fecha_pago as string,",
+				"          estado_pago as string,",
+				"          canal_pago as string,",
+				"          nro_comprobante as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source5",
+				"source(output(",
+				"          parto_id as string,",
+				"          ci_madre as string,",
+				"          ci_recien_nacido as string,",
+				"          establecimiento_id as string,",
+				"          fecha_parto as string,",
+				"          tipo_parto as string,",
+				"          peso_nacimiento_kg as string,",
+				"          talla_nacimiento_cm as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source6",
+				"source1 derive(fecha_control = coalesce( \r",
+				"    toDate(fecha_control, 'yyyy-MM-dd'), \r",
+				"    toDate(fecha_control, 'dd/MM/yyyy'), \r",
+				"    toDate(fecha_control, 'MM-dd-yyyy'), \r",
+				"    toDate(fecha_control, 'yyyy/MM/dd'), \r",
+				"    toDate(fecha_control, 'dd-MMM-yyyy'),\r",
+				"    toDate(fecha_control, 'MMMM dd, yyyy'),\r",
+				"    toDate(fecha_control, \"dd 'de' MMMM 'de' yyyy\")\r",
+				"),",
+				"          ci_nino = (regexReplace(toString(ci_nino), '[^0-9.]', '')),",
+				"          ci_madre = (regexReplace(toString(ci_madre), '[^0-9.]', '')),",
+				"          talla_nino_cm = toDecimal(talla_nino_cm),",
+				"          peso_nino_kg = toDecimal(peso_nino_kg),",
+				"          resultado = case(\r",
+				"  in(['computadoras','laptops','pcs'], resultado), 'Normal',\r",
+				"  in(['bAJO pESO','pantallas'], resultado), 'Bajo Peso',\r",
+				"  in(['perifericos','periféricos'], resultado), 'Desnutricion Leve',\r",
+				"  resultado\r",
+				")\r",
+				",",
+				"          vacuna_aplicada = initCap(lower(vacuna_aplicada))) ~> derivedColumn1"
+			]
+		}
+	}
+}
