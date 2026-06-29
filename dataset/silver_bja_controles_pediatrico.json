@@ -1,0 +1,16 @@
+{
+	"name": "silver_bja_controles_pediatrico",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "silver",
+			"table": "silver_bja_controles_pediatrico"
+		}
+	}
+}

@@ -73,9 +73,122 @@
 						"type": "DatasetReference"
 					},
 					"name": "source10"
+				},
+				{
+					"dataset": {
+						"referenceName": "SUP_entregas",
+						"type": "DatasetReference"
+					},
+					"name": "source11"
+				},
+				{
+					"dataset": {
+						"referenceName": "SUP_establecimientos",
+						"type": "DatasetReference"
+					},
+					"name": "source12"
+				},
+				{
+					"dataset": {
+						"referenceName": "SUP_inscripciones",
+						"type": "DatasetReference"
+					},
+					"name": "source13"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "silver_bja_controles_pediatrico",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "silver_bja_controles_prenatales",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				},
+				{
+					"dataset": {
+						"referenceName": "silver_bja_establecimientos",
+						"type": "DatasetReference"
+					},
+					"name": "sink3"
+				},
+				{
+					"dataset": {
+						"referenceName": "silver_bja_inscripciones",
+						"type": "DatasetReference"
+					},
+					"name": "sink4"
+				},
+				{
+					"dataset": {
+						"referenceName": "silver_bja_pagos",
+						"type": "DatasetReference"
+					},
+					"name": "sink5"
+				},
+				{
+					"dataset": {
+						"referenceName": "silver_bja_partos",
+						"type": "DatasetReference"
+					},
+					"name": "sink6"
+				},
+				{
+					"dataset": {
+						"referenceName": "silver_segip_personas",
+						"type": "DatasetReference"
+					},
+					"name": "sink7"
+				},
+				{
+					"dataset": {
+						"referenceName": "silver_SUP_boletas",
+						"type": "DatasetReference"
+					},
+					"name": "sink8"
+				},
+				{
+					"dataset": {
+						"referenceName": "Silver_SUP_catalogo_paquetes",
+						"type": "DatasetReference"
+					},
+					"name": "sink9"
+				},
+				{
+					"dataset": {
+						"referenceName": "silver_SUP_controles",
+						"type": "DatasetReference"
+					},
+					"name": "sink10"
+				},
+				{
+					"dataset": {
+						"referenceName": "silver_SUP_entregas",
+						"type": "DatasetReference"
+					},
+					"name": "sink11"
+				},
+				{
+					"dataset": {
+						"referenceName": "silver_SUP_establecimientos",
+						"type": "DatasetReference"
+					},
+					"name": "sink12"
+				},
+				{
+					"dataset": {
+						"referenceName": "silver_SUP_inscripciones",
+						"type": "DatasetReference"
+					},
+					"name": "sink13"
+				}
+			],
 			"transformations": [
 				{
 					"name": "derivedColumn1"
@@ -100,6 +213,18 @@
 				},
 				{
 					"name": "derivedColumn8"
+				},
+				{
+					"name": "derivedColumn9"
+				},
+				{
+					"name": "derivedColumn10"
+				},
+				{
+					"name": "derivedColumn11"
+				},
+				{
+					"name": "derivedColumn12"
 				}
 			],
 			"scriptLines": [
@@ -230,6 +355,46 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source10",
+				"source(output(",
+				"          entrega_id as string,",
+				"          boleta_id as string,",
+				"          ci_beneficiaria as string,",
+				"          establecimiento_id as string,",
+				"          paquete_id as string,",
+				"          paquete_nombre as string,",
+				"          fecha_entrega as string,",
+				"          lote_produccion as string,",
+				"          peso_paquete_kg as string,",
+				"          fecha_proxima_entrega as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source11",
+				"source(output(",
+				"          establecimiento_id as string,",
+				"          codigo_snis as string,",
+				"          nombre as string,",
+				"          tipo as string,",
+				"          nivel_atencion as string,",
+				"          municipio as string,",
+				"          departamento as string,",
+				"          red_salud as string,",
+				"          estado as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source12",
+				"source(output(",
+				"          inscripcion_id as string,",
+				"          ci_beneficiaria as string,",
+				"          establecimiento_id as string,",
+				"          fecha_inscripcion as string,",
+				"          semana_gestacion as string,",
+				"          estado as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source13",
 				"source1 derive(fecha_control = coalesce( \r",
 				"    toDate(fecha_control, 'yyyy-MM-dd'), \r",
 				"    toDate(fecha_control, 'dd/MM/yyyy'), \r",
@@ -269,15 +434,15 @@
 				"  resultado\r",
 				")) ~> derivedColumn2",
 				"source3 derive(departamento = case(\r",
-				"    in(['CB'], departamento), 'Cochabamba',\r",
-				"    in(['LP'], departamento), 'La Paz', \r",
-				"    in(['SC'], departamento), 'Santa Cruz',\r",
-				"    in(['PT'], departamento), 'Potosi',\r",
-				"    in(['CH'], departamento), 'Chuquisaca', \r",
-				"    in(['BN'], departamento), 'Beni',\r",
-				"    in(['PD'], departamento), 'Pando',\r",
-				"    in(['OR'], departamento), 'Oruro', \r",
-				"    in(['TJ'], departamento), 'Tarija',\r",
+				"    in(['Cochabamba'], departamento), 'CB',\r",
+				"    in(['La Paz'], departamento), 'LP', \r",
+				"    in(['Santa Cruz'], departamento), 'SC',\r",
+				"    in(['Potosi'], departamento), 'PT',\r",
+				"    in(['Chuquisaca'], departamento), 'CH', \r",
+				"    in(['Beni'], departamento), 'BN',\r",
+				"    in(['Pando'], departamento), 'PD',\r",
+				"    in(['Oruro'], departamento), 'OR', \r",
+				"    in(['Tarija'], departamento), 'TJ',\r",
 				"departamento\r",
 				")) ~> derivedColumn3",
 				"source4 derive(ci_beneficiaria = (regexReplace(toString(ci_beneficiaria), '[^0-9.]', '')),",
@@ -317,7 +482,7 @@
 				")) ~> derivedColumn6",
 				"source7 derive({Fecha Nac.} = toDate({Fecha Nac.}),",
 				"          CI = (regexReplace(toString(CI), '[^0-9.]', ''))) ~> derivedColumn7",
-				"source8 derive(ci_beneficiaria = ERROR_FUNCTION(''),",
+				"source8 derive(ci_beneficiaria = (regexReplace(toString(ci_beneficiaria), '[^0-9.]', '')),",
 				"          fecha_emision = coalesce( \r",
 				"    toDate(fecha_emision, 'yyyy-MM-dd'), \r",
 				"    toDate(fecha_emision, 'dd/MM/yyyy'), \r",
@@ -326,7 +491,122 @@
 				"    toDate(fecha_emision, 'dd-MMM-yyyy'),\r",
 				"    toDate(fecha_emision, 'MMMM dd, yyyy'),\r",
 				"    toDate(fecha_emision, \"dd 'de' MMMM 'de' yyyy\")\r",
-				")) ~> derivedColumn8"
+				"),",
+				"          estado = case(\r",
+				"  in(['VIGENTE','vigente'], estado), 'Vigente',\r",
+				"  in(['VENCIDA','vencida','vENCIDA'], estado), 'Vencida',\r",
+				"  in(['CANJEADA','canjeada','cANJEADA'], estado), 'Canjeada',\r",
+				"  in(['ANULADA','anulada'], estado), 'Anulada',\r",
+				"  estado\r",
+				")) ~> derivedColumn8",
+				"source9 derive(peso_estandar_kg = toDecimal(peso_estandar_kg),",
+				"          costo_estimado_bs = toDecimal(costo_estimado_bs)) ~> derivedColumn9",
+				"source10 derive(ci_beneficiaria = (regexReplace(toString(ci_beneficiaria), '[^0-9.]', '')),",
+				"          fecha_control = coalesce( \r",
+				"    toDate(fecha_control, 'yyyy-MM-dd'), \r",
+				"    toDate(fecha_control, 'dd/MM/yyyy'), \r",
+				"    toDate(fecha_control, 'MM-dd-yyyy'), \r",
+				"    toDate(fecha_control, 'yyyy/MM/dd'), \r",
+				"    toDate(fecha_control, 'dd-MMM-yyyy'),\r",
+				"    toDate(fecha_control, 'MMMM dd, yyyy'),\r",
+				"    toDate(fecha_control, \"dd 'de' MMMM 'de' yyyy\")\r",
+				"),",
+				"          peso_madre_kg = toDecimal(peso_madre_kg),",
+				"          semana_gestacion = toInteger(semana_gestacion)) ~> derivedColumn10",
+				"source11 derive(ci_beneficiaria = (regexReplace(toString(ci_beneficiaria), '[^0-9.]', '')),",
+				"          fecha_entrega = coalesce( \r",
+				"    toDate(fecha_entrega, 'yyyy-MM-dd'), \r",
+				"    toDate(fecha_entrega, 'dd/MM/yyyy'), \r",
+				"    toDate(fecha_entrega, 'MM-dd-yyyy'), \r",
+				"    toDate(fecha_entrega, 'yyyy/MM/dd'), \r",
+				"    toDate(fecha_entrega, 'dd-MMM-yyyy'),\r",
+				"    toDate(fecha_entrega, 'MMMM dd, yyyy'),\r",
+				"    toDate(fecha_entrega, \"dd 'de' MMMM 'de' yyyy\")\r",
+				"),",
+				"          fecha_proxima_entrega = coalesce( \r",
+				"    toDate(fecha_proxima_entrega, 'yyyy-MM-dd'), \r",
+				"    toDate(fecha_proxima_entrega, 'dd/MM/yyyy'), \r",
+				"    toDate(fecha_proxima_entrega, 'MM-dd-yyyy'), \r",
+				"    toDate(fecha_proxima_entrega, 'yyyy/MM/dd'), \r",
+				"    toDate(fecha_proxima_entrega, 'dd-MMM-yyyy'),\r",
+				"    toDate(fecha_proxima_entrega, 'MMMM dd, yyyy'),\r",
+				"    toDate(fecha_proxima_entrega, \"dd 'de' MMMM 'de' yyyy\")\r",
+				"),",
+				"          peso_paquete_kg = toDecimal(peso_paquete_kg)) ~> derivedColumn11",
+				"source13 derive(ci_beneficiaria = (regexReplace(toString(ci_beneficiaria), '[^0-9.]', '')),",
+				"          fecha_inscripcion = coalesce( \r",
+				"    toDate(fecha_inscripcion, 'yyyy-MM-dd'), \r",
+				"    toDate(fecha_inscripcion, 'dd/MM/yyyy'), \r",
+				"    toDate(fecha_inscripcion, 'MM-dd-yyyy'), \r",
+				"    toDate(fecha_inscripcion, 'yyyy/MM/dd'), \r",
+				"    toDate(fecha_inscripcion, 'dd-MMM-yyyy'),\r",
+				"    toDate(fecha_inscripcion, 'MMMM dd, yyyy'),\r",
+				"    toDate(fecha_inscripcion, \"dd 'de' MMMM 'de' yyyy\")\r",
+				")) ~> derivedColumn12",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
+				"derivedColumn2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink2",
+				"derivedColumn3 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink3",
+				"derivedColumn4 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink4",
+				"derivedColumn5 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink5",
+				"derivedColumn6 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink6",
+				"derivedColumn7 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink7",
+				"derivedColumn8 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink8",
+				"derivedColumn9 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink9",
+				"derivedColumn10 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink10",
+				"derivedColumn11 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink11",
+				"source12 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink12",
+				"derivedColumn12 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink13"
 			]
 		}
 	}

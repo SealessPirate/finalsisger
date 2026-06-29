@@ -1,0 +1,22 @@
+{
+	"name": "Silver_SUP_catalogo_paquetes",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Segip",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "silver"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
