@@ -1,0 +1,18 @@
+{
+	"name": "AzurePostgreSql1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzurePostgreSql",
+		"version": "2.0",
+		"typeProperties": {
+			"server": "db.btitildjxhkwjorckvdf.supabase.co",
+			"port": "5432",
+			"database": "LS_PostgreSQL_SEGIP",
+			"sslMode": 3,
+			"username": "userSisGer",
+			"authenticationType": "Basic",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDg3OUE0RjE3LTUwQjQtNDc1My04OTRFLUNDRkRERjg3MzQ1Ql9hNTAyNGE2Yy1iYmYwLTQ3ZTItOTk0Yy1kY2ViMzdkMWMwOGIiDQp9"
+		}
+	}
+}
