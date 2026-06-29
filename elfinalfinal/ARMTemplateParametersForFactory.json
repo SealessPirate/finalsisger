@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "elfinalfinal"
+		},
+		"AzurePostgreSql1_password": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_password": {
+			"value": ""
+		},
+		"Segip_connectionString": {
+			"value": ""
+		},
+		"AzurePostgreSql1_properties_typeProperties_server": {
+			"value": "db.btitildjxhkwjorckvdf.supabase.co"
+		},
+		"AzurePostgreSql1_properties_typeProperties_database": {
+			"value": "LS_PostgreSQL_SEGIP"
+		},
+		"AzurePostgreSql1_properties_typeProperties_username": {
+			"value": "userSisGer"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"value": "aws-1-us-east-1.pooler.supabase.com"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"value": "SEGIP"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"value": "userSisGer.btitildjxhkwjorckvdf"
+		}
+	}
+}
