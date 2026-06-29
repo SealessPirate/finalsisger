@@ -54,6 +54,9 @@
 				},
 				{
 					"name": "derivedColumn2"
+				},
+				{
+					"name": "derivedColumn3"
 				}
 			],
 			"scriptLines": [
@@ -167,7 +170,28 @@
 				"    toDate(fecha_control, 'dd-MMM-yyyy'),\r",
 				"    toDate(fecha_control, 'MMMM dd, yyyy'),\r",
 				"    toDate(fecha_control, \"dd 'de' MMMM 'de' yyyy\")\r",
-				")) ~> derivedColumn2"
+				"),",
+				"          peso_madre_kg = toDecimal(peso_madre_kg),",
+				"          resultado = case(\r",
+				"  in(['nrmal','nORMAL','normal','Nrmal','Noraml','NORMAL'], resultado), 'Normal',\r",
+				"  in(['Riesgoo Bajo','pantallas'], resultado), 'Riesgo Bajo',\r",
+				"  in(['rIESGO aLTO','Desnutriicón Leve','Desnutricion Leve','DESNUTRICIÓN LVEE','Riesgoo Alto','riesgo alto'], resultado), 'Riesgo Alto',\r",
+				"  in(['RIIESGO MODERADO'], resultado), 'Riesgo Moderado',\r",
+				"  resultado\r",
+				")\r",
+				") ~> derivedColumn2",
+				"source3 derive(departamento = case(\r",
+				"    in(['CB'], departamento), 'Cochabamba',\r",
+				"    in(['LP'], departamento), 'La Paz', \r",
+				"    in(['SC'], departamento), 'Santa Cruz',\r",
+				"    in(['PT'], departamento), 'Potosi',\r",
+				"    in(['SU'], departamento), 'Sucre', \r",
+				"    in(['BN'], departamento), 'Beni',\r",
+				"    in(['PA'], departamento), 'Pando',\r",
+				"    in(['OR'], departamento), 'Oruro', \r",
+				"    in(['TJ'], departamento), 'Tarija',\r",
+				"departamento\r",
+				")) ~> derivedColumn3"
 			]
 		}
 	}
