@@ -45,6 +45,34 @@
 						"type": "DatasetReference"
 					},
 					"name": "source6"
+				},
+				{
+					"dataset": {
+						"referenceName": "Segip_Personas",
+						"type": "DatasetReference"
+					},
+					"name": "source7"
+				},
+				{
+					"dataset": {
+						"referenceName": "SUP_boletas",
+						"type": "DatasetReference"
+					},
+					"name": "source8"
+				},
+				{
+					"dataset": {
+						"referenceName": "SUP_catalogo_paquetes",
+						"type": "DatasetReference"
+					},
+					"name": "source9"
+				},
+				{
+					"dataset": {
+						"referenceName": "SUP_controles",
+						"type": "DatasetReference"
+					},
+					"name": "source10"
 				}
 			],
 			"sinks": [],
@@ -66,6 +94,12 @@
 				},
 				{
 					"name": "derivedColumn6"
+				},
+				{
+					"name": "derivedColumn7"
+				},
+				{
+					"name": "derivedColumn8"
 				}
 			],
 			"scriptLines": [
@@ -149,6 +183,53 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source6",
+				"source(output(",
+				"          CI as string,",
+				"          Nombres as string,",
+				"          {Ap. Paterno} as string,",
+				"          {Ap. Materno} as string,",
+				"          {Fecha Nac.} as string,",
+				"          {Género} as string,",
+				"          {Estado Civil} as string,",
+				"          Municipio as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source7",
+				"source(output(",
+				"          boleta_id as string,",
+				"          control_id as string,",
+				"          ci_beneficiaria as string,",
+				"          nro_boleta as string,",
+				"          fecha_emision as string,",
+				"          estado as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source8",
+				"source(output(",
+				"          paquete_id as string,",
+				"          nombre as string,",
+				"          contenido as string,",
+				"          peso_estandar_kg as string,",
+				"          costo_estimado_bs as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source9",
+				"source(output(",
+				"          control_id as string,",
+				"          ci_beneficiaria as string,",
+				"          establecimiento_id as string,",
+				"          nro_control as string,",
+				"          fecha_control as string,",
+				"          semana_gestacion as string,",
+				"          peso_madre_kg as string,",
+				"          presion_arterial as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source10",
 				"source1 derive(fecha_control = coalesce( \r",
 				"    toDate(fecha_control, 'yyyy-MM-dd'), \r",
 				"    toDate(fecha_control, 'dd/MM/yyyy'), \r",
@@ -230,10 +311,22 @@
 				"    toDate(fecha_parto, \"dd 'de' MMMM 'de' yyyy\")\r",
 				"),",
 				"          tipo_parto = case(\r",
-				"  in(['Nattural','nORMAL','normal','Nrmal','Noraml','NORMAL'], tipo_parto), 'Natural',\r",
-				"  in(['Cessárea','cesárea'], tipo_parto), 'Cesárea',\r",
+				"  in(['Nattural','nATURAL','naturl','natural','NATURAL','natural','Ntural'], tipo_parto), 'Natural',\r",
+				"  in(['Cessárea','cesárea','Cesárrea','Cesárae','cesarea','CESÁREA'], tipo_parto), 'Cesárea',\r",
 				"  tipo_parto\r",
-				")) ~> derivedColumn6"
+				")) ~> derivedColumn6",
+				"source7 derive({Fecha Nac.} = toDate({Fecha Nac.}),",
+				"          CI = (regexReplace(toString(CI), '[^0-9.]', ''))) ~> derivedColumn7",
+				"source8 derive(ci_beneficiaria = ERROR_FUNCTION(''),",
+				"          fecha_emision = coalesce( \r",
+				"    toDate(fecha_emision, 'yyyy-MM-dd'), \r",
+				"    toDate(fecha_emision, 'dd/MM/yyyy'), \r",
+				"    toDate(fecha_emision, 'MM-dd-yyyy'), \r",
+				"    toDate(fecha_emision, 'yyyy/MM/dd'), \r",
+				"    toDate(fecha_emision, 'dd-MMM-yyyy'),\r",
+				"    toDate(fecha_emision, 'MMMM dd, yyyy'),\r",
+				"    toDate(fecha_emision, \"dd 'de' MMMM 'de' yyyy\")\r",
+				")) ~> derivedColumn8"
 			]
 		}
 	}
