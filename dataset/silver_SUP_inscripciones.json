@@ -5,6 +5,9 @@
 			"referenceName": "Segip",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Silver"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
