@@ -13,6 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "Silver_SUP_catalogo_paquetes",
 				"container": "silver"
 			},
 			"columnDelimiter": ",",

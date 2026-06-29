@@ -13,6 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "silver_bja_pagos",
 				"container": "silver"
 			},
 			"columnDelimiter": ",",

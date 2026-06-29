@@ -13,6 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "silver_segip_personas",
 				"container": "silver"
 			},
 			"columnDelimiter": ",",

@@ -13,6 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "silver_SUP_entregas",
 				"container": "silver"
 			},
 			"columnDelimiter": ",",

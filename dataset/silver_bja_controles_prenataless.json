@@ -13,6 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "silver_bja_controles_prenataless",
 				"container": "silver"
 			},
 			"columnDelimiter": ",",
