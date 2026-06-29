@@ -57,6 +57,12 @@
 				},
 				{
 					"name": "derivedColumn3"
+				},
+				{
+					"name": "derivedColumn4"
+				},
+				{
+					"name": "derivedColumn5"
 				}
 			],
 			"scriptLines": [
@@ -158,8 +164,7 @@
 				"  in(['bAJO pESO','pantallas'], resultado), 'Bajo Peso',\r",
 				"  in(['DESNUTRICIÓN LEVE','Desnutriicón Leve','Desnutricion Leve','DESNUTRICIÓN LVEE'], resultado), 'Desnutrición Leve',\r",
 				"  resultado\r",
-				")\r",
-				",",
+				"),",
 				"          vacuna_aplicada = initCap(lower(vacuna_aplicada))) ~> derivedColumn1",
 				"source2 derive(ci_beneficiaria = (regexReplace(toString(ci_beneficiaria), '[^0-9.]', '')),",
 				"          fecha_control = coalesce( \r",
@@ -178,20 +183,33 @@
 				"  in(['rIESGO aLTO','Desnutriicón Leve','Desnutricion Leve','DESNUTRICIÓN LVEE','Riesgoo Alto','riesgo alto'], resultado), 'Riesgo Alto',\r",
 				"  in(['RIIESGO MODERADO'], resultado), 'Riesgo Moderado',\r",
 				"  resultado\r",
-				")\r",
-				") ~> derivedColumn2",
+				")) ~> derivedColumn2",
 				"source3 derive(departamento = case(\r",
 				"    in(['CB'], departamento), 'Cochabamba',\r",
 				"    in(['LP'], departamento), 'La Paz', \r",
 				"    in(['SC'], departamento), 'Santa Cruz',\r",
 				"    in(['PT'], departamento), 'Potosi',\r",
-				"    in(['SU'], departamento), 'Sucre', \r",
+				"    in(['CH'], departamento), 'Chuquisaca', \r",
 				"    in(['BN'], departamento), 'Beni',\r",
-				"    in(['PA'], departamento), 'Pando',\r",
+				"    in(['PD'], departamento), 'Pando',\r",
 				"    in(['OR'], departamento), 'Oruro', \r",
 				"    in(['TJ'], departamento), 'Tarija',\r",
 				"departamento\r",
-				")) ~> derivedColumn3"
+				")) ~> derivedColumn3",
+				"source4 derive(ci_beneficiaria = (regexReplace(toString(ci_beneficiaria), '[^0-9.]', '')),",
+				"          fecha_inscripcion = coalesce(      toDate(fecha_inscripcion, 'yyyy-MM-dd'),      toDate(fecha_inscripcion, 'dd/MM/yyyy'),      toDate(fecha_inscripcion, 'MM-dd-yyyy'),      toDate(fecha_inscripcion, 'yyyy/MM/dd'),      toDate(fecha_inscripcion, 'dd-MMM-yyyy'),     toDate(fecha_inscripcion, 'MMMM dd, yyyy'),     toDate(fecha_inscripcion, \"dd 'de' MMMM 'de' yyyy\") ),",
+				"          semana_gestacion = toInteger(semana_gestacion)) ~> derivedColumn4",
+				"source5 derive(ci_beneficiaria = (regexReplace(toString(ci_beneficiaria), '[^0-9.]', '')),",
+				"          monto_bs = toDecimal(monto_bs),",
+				"          fecha_pago = coalesce( \r",
+				"    toDate(fecha_pago, 'yyyy-MM-dd'), \r",
+				"    toDate(fecha_pago, 'dd/MM/yyyy'), \r",
+				"    toDate(fecha_pago, 'MM-dd-yyyy'), \r",
+				"    toDate(fecha_pago, 'yyyy/MM/dd'), \r",
+				"    toDate(fecha_pago, 'dd-MMM-yyyy'),\r",
+				"    toDate(fecha_pago, 'MMMM dd, yyyy'),\r",
+				"    toDate(fecha_pago, \"dd 'de' MMMM 'de' yyyy\")\r",
+				")) ~> derivedColumn5"
 			]
 		}
 	}
